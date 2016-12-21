@@ -1,3 +1,3 @@
-npm run client
-npm run server
-gulp
+npm run client \n
+npm run server \n
+gulp \n
