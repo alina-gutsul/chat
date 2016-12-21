@@ -1,0 +1,31 @@
+.list-item {
+    padding-right: 25px !important;
+    border-bottom: 1px solid #FCFCFC !important;
+
+    &.notification {
+        font-style: italic;
+        color: gray !important;
+    }
+}
+.icon-delete {
+    position: absolute !important;
+    right: -25px;
+    top: 50%;
+    transform: translateY(-50%) !important;
+    z-index: 10;
+    visibility: hidden;
+    transition: width 0.5s;
+
+    .list-item:hover & {
+        visibility: visible;
+    }
+}
+
+.icon-name {
+    top: 0 !important;
+    background-color: #F2FDFF;
+    padding: 2px 5px;
+    .notification & {
+        display: none!important;
+    }
+}
