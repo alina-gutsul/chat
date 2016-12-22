@@ -8,6 +8,7 @@ export default function messages(state = [], action) {
                 {
                     id: action.id,
                     user_id: action.user_id,
+                    user_name: action.user_name,
                     text: action.text,
                     message_type: action.message_type
                 }

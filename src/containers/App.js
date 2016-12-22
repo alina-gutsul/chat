@@ -9,8 +9,6 @@ import MessageTextInput from '../components/MessageTextInput';
 import * as MessageActions from '../actions';
 import cuid from 'cuid';
 
-// require ('../../styles/app.scss');
-
 export const socket = io('http://localhost:3000');
 
 
@@ -18,15 +16,10 @@ class App extends Component {
     componentDidMount() {
         const { actions } = this.props;
 
-
-        socket.on("initialize user", (id) => {
+        socket.on("connect", () => {
             var name = prompt("Welcome. Please enter your name");
-            actions.initializeCurrentUser(id, name);
+            actions.initializeCurrentUser(name);
         });
-
-        socket.on('add user from server', (data) => {
-            actions.addNewUser(data);
-        })
 
         socket.on('delete from server', (id) => {
             actions.removeMessageRequestFromServer(id);
@@ -35,10 +28,6 @@ class App extends Component {
         socket.on("message from server", (data) => {
             actions.storeMessageRequestFromServer(data);
         });
-
-        socket.on('delete user', (id) => {
-            actions.deleteUser(id);
-        })
 
     }
 

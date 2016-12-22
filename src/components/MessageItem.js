@@ -10,7 +10,6 @@ import cx from 'classnames';
 export default class MessageItem extends Component {
 
     render() {
-        console.log(this.props);
         const { message_type, text, id, user_name, deleteHandle, changable } = this.props;
         var classes = cx(message_type, {'list-item': true});
         if (changable) {

@@ -24,18 +24,14 @@ const io = new SocketIo(server);
 io.on('connection', function(socket){
     console.log('New user connected -> id: ', socket.id);
 
-//not used
-//sending id from client to server
-    // socket.on('new client connected', (data) => {
-    //     console.log('id from client: ', data.id);
-    // });
-
-    //set user id
-    socket.emit('initialize user', socket.id);
-
-    //add user to array
     socket.on('add user', (data) => {
-        io.emit('add user from server', data);
+        users[socket.id] = { name: data.name }
+        io.emit('message from server', {
+            message: data.name + ' joined conversation',
+            id: cuid(),
+            user_id: socket.id,
+            message_type: messageTypes.NOTIFICATION
+        });
     });
 
     socket.on('delete message', (id) => {
@@ -43,10 +39,21 @@ io.on('connection', function(socket){
     });
 
     socket.on('chat message', function(data){
-        io.emit('message from server', {message: data.message, id: data.id, user_id: data.user_id, message_type: messageTypes.MESSAGE });
+        io.emit('message from server', {
+            message: data.message,
+            id: data.id,
+            user_id: data.user_id,
+            user_name: users[socket.id].name,
+            message_type: messageTypes.MESSAGE
+        });
     });
 
     socket.on('disconnect', function(data) {
-        io.emit('delete user', socket.id);
+        io.emit('message from server', {
+            message: users[socket.id].name + ' left conversation',
+            id: cuid(),
+            user_id: socket.id,
+            message_type: messageTypes.NOTIFICATION
+        });
     });
 });

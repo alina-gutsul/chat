@@ -7,19 +7,17 @@ import List from 'material-ui/List/List';
 
 export default class MainSection extends Component {
     render() {
-        const { messages, user, users} = this.props;
+        const { messages, user, users, actions} = this.props;
 
         const messageList = messages.map(message => {
             const fromCurrentUser = message.user_id === user.id;
-            const userName = fromCurrentUser ? user.name : getUserName(users, message.user_id);
 
             return (
                 <MessageItem
                     key={message.id}
                     {...message}
-                    user_name={userName}
                     changable={fromCurrentUser}
-                    deleteHandle={removeMessage}
+                    deleteHandle={actions.removeMessage}
                 />
             )
         });

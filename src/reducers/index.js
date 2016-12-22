@@ -5,7 +5,6 @@ import users from './users'
 
 const rootReducer = combineReducers({
     messages,
-    users,
     user
 })
 
