@@ -10,14 +10,17 @@ import cx from 'classnames';
 export default class MessageItem extends Component {
 
     render() {
-        const { message_type, text, id, user_name, deleteHandle, changable } = this.props;
+        const { message_type, text, id, user_name, deleteHandle, color, changable } = this.props;
+        const color2 = '#F00';
         var classes = cx(message_type, {'list-item': true});
         if (changable) {
             return (
                 <ListItem
                     className={classes}
                     leftAvatar={
-                        <div className="icon-name"> { user_name } </div>
+                        <div className="icon-name" style={{ backgroundColor: color }}>
+                             { user_name }
+                         </div>
                     }
                 >
                     { text }
@@ -36,7 +39,9 @@ export default class MessageItem extends Component {
             <ListItem
                 className={classes}
                 rightAvatar={
-                    <div className="icon-name"> { user_name } </div>
+                    <div className="icon-name" style={{backgroundColor: color }}>
+                        { user_name }
+                    </div>
                 }
             >
                 { text }

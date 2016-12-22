@@ -10,6 +10,7 @@ export default function messages(state = [], action) {
                     user_id: action.user_id,
                     user_name: action.user_name,
                     text: action.text,
+                    color: action.color,
                     message_type: action.message_type
                 }
             ]

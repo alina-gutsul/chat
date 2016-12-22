@@ -5,7 +5,8 @@ export default function messages(state = {}, action) {
         case SET_USER_ID:
             return {
                 id: action.id,
-                name: action.name
+                name: action.name,
+                color: action.color
             }
         default:
             return state

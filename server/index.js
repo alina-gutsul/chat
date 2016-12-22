@@ -25,7 +25,7 @@ io.on('connection', function(socket){
     console.log('New user connected -> id: ', socket.id);
 
     socket.on('add user', (data) => {
-        users[socket.id] = { name: data.name }
+        users[socket.id] = { name: data.name, color: data.color };
         io.emit('message from server', {
             message: data.name + ' joined conversation',
             id: cuid(),
@@ -39,21 +39,24 @@ io.on('connection', function(socket){
     });
 
     socket.on('chat message', function(data){
+        const user = users[socket.id];
         io.emit('message from server', {
             message: data.message,
             id: data.id,
             user_id: data.user_id,
-            user_name: users[socket.id].name,
+            user_name: user.name,
+            color: user.color,
             message_type: messageTypes.MESSAGE
         });
     });
 
-    socket.on('disconnect', function(data) {
+    socket.on('disconnect', function() {
         io.emit('message from server', {
             message: users[socket.id].name + ' left conversation',
             id: cuid(),
             user_id: socket.id,
             message_type: messageTypes.NOTIFICATION
         });
+        delete users[socket.id];
     });
 });
