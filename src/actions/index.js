@@ -36,10 +36,7 @@ function addMessage(text, id, user_id, user_name, color, message_type) {
 
 export function storeMessageRequestFromServer(data) {
     return (dispatch, getState) => {
-        const user_id = getState().user.id;
-        if(user_id !== data.user_id){
-            return dispatch(addMessage(data.message, data.id, data.user_id, data.user_name, data.color, data.message_type));
-        }
+        return dispatch(addMessage(data.message, data.id, data.user_id, data.user_name, data.color, data.message_type));
     }
 }
 
@@ -77,5 +74,17 @@ export function editMessage(id, text) {
         type: types.EDIT_MESSAGE,
         id,
         text
+    }
+}
+
+export function userIsTyping() {
+    return (dispatch) => {
+        socket.emit('user is typing');
+    }
+}
+
+export function userStoppedTyping() {
+    return (dispatch) => {
+        socket.emit('user stopped typing');
     }
 }

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import { getUserName, removeMessage } from '../actions';
 import MessageItem from '../components/MessageItem.js'
 import List from 'material-ui/List/List';
 
@@ -17,7 +16,6 @@ export default class MainSection extends Component {
                     key={message.id}
                     {...message}
                     changable={fromCurrentUser}
-                    deleteHandle={actions.removeMessage}
                 />
             )
         });

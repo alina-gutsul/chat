@@ -5,7 +5,8 @@ import { setUserId, addMessage } from '../src/actions';
 import * as messageTypes from '../src/constants/MessageTypes';
 import cuid from 'cuid';
 
-let users = [];
+const users = [];
+let typingUsers = [];
 
 const app = express();
 
@@ -26,7 +27,7 @@ io.on('connection', function(socket){
 
     socket.on('add user', (data) => {
         users[socket.id] = { name: data.name, color: data.color };
-        io.emit('message from server', {
+        socket.broadcast.emit('message from server', {
             message: data.name + ' joined conversation',
             id: cuid(),
             user_id: socket.id,
@@ -40,7 +41,7 @@ io.on('connection', function(socket){
 
     socket.on('chat message', function(data){
         const user = users[socket.id];
-        io.emit('message from server', {
+        socket.broadcast.emit('message from server', {
             message: data.message,
             id: data.id,
             user_id: data.user_id,
@@ -59,4 +60,33 @@ io.on('connection', function(socket){
         });
         delete users[socket.id];
     });
+
+    socket.on('user is typing', function() {
+        typingUsers.push(socket.id);
+        socket.broadcast.emit('change typing status', printTypingUsers());
+    });
+
+    socket.on('user stopped typing', function() {
+        typingUsers = typingUsers.filter(userId =>
+            userId !== socket.id
+        )
+        socket.broadcast.emit('change typing status', printTypingUsers());
+    });
 });
+
+
+function printTypingUsers()  {
+    let output = '';
+
+    if (typingUsers.length < 1) {
+        return output;
+    }
+
+    typingUsers.forEach((userId) => {
+        output += users[userId].name + ' ';
+    });
+
+    output += typingUsers.length == 1 ? 'is typing...' : 'are typing...'
+
+    return output;
+}

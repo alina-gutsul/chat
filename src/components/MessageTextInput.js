@@ -1,7 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import TextField from 'material-ui/TextField';
 
-
 const styles = {
     'width': '94%',
     'height': 'auto',
@@ -16,6 +15,10 @@ export default class MessageTextInput extends Component {
 
   handleChange = e => {
     this.setState({ text: e.target.value })
+  }
+
+  handleFocus = e => {
+      console.log('lala');
   }
 
   handleSubmit = e => {
@@ -37,6 +40,9 @@ export default class MessageTextInput extends Component {
             onKeyDown={this.handleSubmit}
             value={this.state.text}
             style={styles}
+            onFocus={this.props.userIsTyping}
+            onBlur={this.props.userStoppedTyping}
+
         />
     )
   }

@@ -1,0 +1,13 @@
+.typing-state{
+    height: 20px;
+    width: 100%;
+    padding: 0 25px;
+    font-size: 16px;
+    line-height: 20px;
+    box-sizing: border-box;
+    transition: background-color 1s;
+
+    &--visible{
+        background-color: #CCEEFD  ;
+    }
+}

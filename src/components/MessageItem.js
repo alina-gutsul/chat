@@ -1,17 +1,16 @@
 import React, { Component, PropTypes} from 'react';
+import { connect } from 'react-redux';
 import ListItem from 'material-ui/List/ListItem';
 import Avatar from 'material-ui/Avatar';
 import IconButton from 'material-ui/IconButton';
 import ClearIcon from 'material-ui/svg-icons/content/clear';
 import cx from 'classnames';
+import { removeMessage } from '../actions';
 
-// require ('../../styles/messageItem.scss');
-
-export default class MessageItem extends Component {
+class MessageItem extends Component {
 
     render() {
-        const { message_type, text, id, user_name, deleteHandle, color, changable } = this.props;
-        const color2 = '#F00';
+        const { message_type, text, id, user_name, removeMessage, color, changable } = this.props;
         var classes = cx(message_type, {'list-item': true});
         if (changable) {
             return (
@@ -25,7 +24,7 @@ export default class MessageItem extends Component {
                 >
                     { text }
                     <IconButton
-                        onClick={ ()=> { deleteHandle(id) } }
+                        onClick={ () => removeMessage(id) }
                         className="icon-delete"
                         tooltip="Delete"
                         >
@@ -49,3 +48,10 @@ export default class MessageItem extends Component {
         )
     }
 }
+
+export default connect(
+    null,
+    {
+        removeMessage
+    }
+)(MessageItem);

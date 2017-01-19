@@ -6,17 +6,24 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Header from '../components/Header';
 import MainSection from '../components/MainSection';
 import MessageTextInput from '../components/MessageTextInput';
+import TypingState from '../components/typingState'
 import * as MessageActions from '../actions';
+import { sendMessage } from '../actions';
 import cuid from 'cuid';
 
 export const socket = io('http://localhost:3000');
 
 
 class App extends Component {
+
+    state = {
+      typingState: ''
+    }
+
     componentDidMount() {
         const { actions } = this.props;
 
-        socket.on("connect", () => {
+        socket.on('connect', () => {
             var name = prompt("Welcome. Please enter your name");
             actions.initializeCurrentUser(name);
         });
@@ -25,20 +32,28 @@ class App extends Component {
             actions.removeMessageRequestFromServer(id);
         });
 
-        socket.on("message from server", (data) => {
+        socket.on('message from server', (data) => {
             actions.storeMessageRequestFromServer(data);
+        });
+
+        socket.on('change typing status', (state) => {
+            this.setState({
+                typingState: state
+            });
         });
 
     }
 
     render() {
         const {messages, user, users, actions} = this.props;
+        console.log(this.state.typingState);
         return (
             <MuiThemeProvider>
                 <div className="container">
                     <Header />
-                    <MainSection messages={messages} user={user} users={users} actions={actions} />
-                    <MessageTextInput placeholder="your message..." onSave={actions.sendMessage} />
+                    <MainSection messages={messages} user={user} users={users} />
+                    <TypingState state={this.state.typingState} />
+                    <MessageTextInput placeholder="your message..." onSave={actions.sendMessage} userIsTyping={actions.userIsTyping} userStoppedTyping={actions.userStoppedTyping} />
                 </div>
             </MuiThemeProvider>
         );
